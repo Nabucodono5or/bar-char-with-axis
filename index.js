@@ -14,14 +14,24 @@ csv(require("./data/cities.csv")).then((data) => {
   vizData("g.overallG", data);
 });
 
+function criadoYScale(maxPopulation) {
+  let yScale = scaleLinear().domain([0, maxPopulation]).range([0, 480]);
+  return yScale;
+}
+
+function criandoYAxis(yScale) {
+  let yAxis = axisLeft(yScale).ticks(20).tickSize(-300).tickPadding(3);
+  return yAxis;
+}
+
 function vizData(tagRaiz, inconmingData) {
   let maxPopulation = max(inconmingData, (d) => {
     return +d.population;
   });
 
-  let yScale = scaleLinear().domain([0, maxPopulation]).range([0, 480]);
   let yScaleAxis = scaleLinear().domain([maxPopulation, 0]).range([0, 480]);
-  let yAxis = axisLeft(yScaleAxis).ticks(20).tickSize(-300).tickPadding(3);
+  let yScale = criadoYScale(maxPopulation);
+  let yAxis = criandoYAxis(yScaleAxis);
 
   select(tagRaiz)
     .append("g")
